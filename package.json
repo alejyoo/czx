@@ -1,0 +1,17 @@
+{
+  "name": "czx",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "author": "Alejandro Aranda",
+  "license": "MIT",
+  "packageManager": "pnpm@10.9.0",
+  "dependencies": {
+    "@clack/prompts": "^0.10.1",
+    "simple-git": "^3.27.0"
+  },
+  "devDependencies": {
+    "@alejyoo000/rules": "^1.0.1",
+    "@biomejs/biome": "^1.9.4"
+  }
+}
