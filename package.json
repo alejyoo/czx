@@ -7,7 +7,9 @@
   "license": "MIT",
   "packageManager": "pnpm@10.9.0",
   "dependencies": {
+    "@ai-sdk/groq": "^1.2.8",
     "@clack/prompts": "^0.10.1",
+    "ai": "^4.3.13",
     "simple-git": "^3.27.0"
   },
   "devDependencies": {
