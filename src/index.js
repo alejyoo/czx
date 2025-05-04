@@ -4,12 +4,9 @@ import { multiselect } from '@clack/prompts'
 const git = simpleGit()
 const status = await git.status()
 
-const unstaged = [
-  ...status.modified,
-  ...status.not_added,
-  ...status.deleted,
-  ...status.renamed.map(f => f.from)
-]
+const unstaged = status.files
+  .filter(file => file.index === ' ' || file.index === '?')
+  .map(file => file.path)
 
 const selectedFiles = await multiselect({
   message: 'Select files to stage',
@@ -20,3 +17,5 @@ const selectedFiles = await multiselect({
   minChoiceCount: 1,
   maxChoiceCount: unstaged.length
 })
+
+git.add(selectedFiles)
