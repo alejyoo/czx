@@ -8,6 +8,11 @@ const unstaged = status.files
   .filter(file => file.index === ' ' || file.index === '?')
   .map(file => file.path)
 
+if (unstaged.length === 0) {
+  console.log('No unstaged files found.')
+  process.exit(0)
+}
+
 const selectedFiles = await multiselect({
   message: 'Select files to stage',
   options: unstaged.map(file => ({
