@@ -1,5 +1,5 @@
 import { simpleGit } from 'simple-git'
-import { multiselect, isCancel, cancel } from '@clack/prompts'
+import { multiselect, isCancel } from '@clack/prompts'
 import { groq } from '@ai-sdk/groq'
 import { generateText } from 'ai'
 
@@ -29,12 +29,21 @@ if (isCancel(selectedFiles)) {
   process.exit(0)
 }
 
+const diffs = await Promise.all(
+  selectedFiles.map(async file => {
+    const diff = await git.diff([file])
+    return `--- ${file} ---\n${diff}`
+  })
+)
+
+const fullDiff = diffs.join('\n\n')
+
 const commitMessage = await generateText({
   model: groq('qwen-qwq-32b'),
   providerOptions: {
     groq: { reasoningFormat: 'parsed' }
   },
-  prompt: `Generate a conventional commit message based on the following staged file changes. Only return the commit message, with no explanations or extra text. Use the appropriate conventional commit type (e.g., feat, fix, chore, refactor, etc.). \n\n${selectedFiles.join('\n')}`
+  prompt: `You are a helpful AI that writes concise and descriptive conventional commit messages. Analyze the following code diffs and return only the commit message (e.g., feat: add login page). Do not include explanations or headers.\n\n${fullDiff}`
 })
 
 console.log(`Generated commit message: ${commitMessage.text}`)
