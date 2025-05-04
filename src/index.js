@@ -1,5 +1,5 @@
 import { simpleGit } from 'simple-git'
-import { multiselect } from '@clack/prompts'
+import { multiselect, isCancel, cancel } from '@clack/prompts'
 
 const git = simpleGit()
 const status = await git.status()
@@ -22,5 +22,9 @@ const selectedFiles = await multiselect({
   minChoiceCount: 1,
   maxChoiceCount: unstaged.length
 })
+
+if (isCancel(selectedFiles)) {
+  process.exit(0)
+}
 
 git.add(selectedFiles)
