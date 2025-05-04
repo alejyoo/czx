@@ -27,4 +27,5 @@ if (isCancel(selectedFiles)) {
   process.exit(0)
 }
 
-git.commit('Staged selected files', selectedFiles)
+await git.add(selectedFiles)
+await git.commit('Staged selected files')
